@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp cưới | Nhất Phi & Dương Lụa</title>
+    
+    <!-- Import Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Import Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons & Canvas Confetti -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Cấu hình màu sắc custom -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cream-bg': '#FDFBF7',    
+                        'forest-green': '#2B4C3E', 
+                        'forest-dark': '#1F3A2E',  
+                        'gold': '#D4AF37',       
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['Montserrat', 'sans-serif'],
+                        'script': ['"Alex Brush"', 'cursive'], 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body { background-color: #FDFBF7; background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); overflow-x: hidden; }
+
+        .text-gold-glitter {
+            background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .arch-frame {
+            border-radius: 50% 50% 0 0 / 20% 20% 0 0;
+            box-shadow: 0 25px 50px -12px rgba(43, 76, 62, 0.25);
+        }
+
+        .floral-bg {
+            background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
+            opacity: 0.04;
+            mix-blend-mode: multiply;
+        }
+
+        /* Scroll Reveal Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.2s; }
+        .reveal-delay-2 { transition-delay: 0.4s; }
+
+        /* Floating Animation */
+        .float-slow { animation: float 6s ease-in-out infinite; }
+        .float-slower { animation: float 8s ease-in-out infinite reverse; }
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* 3D Flip Card */
+        .flip-card { perspective: 1000px; height: 320px; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 1rem; }
+        .flip-card-back { transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+
+        /* Masonry Grid */
+        .masonry-grid { column-count: 2; column-gap: 1.5rem; }
+        @media (min-width: 768px) { .masonry-grid { column-count: 3; column-gap: 2rem; } }
+        .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; }
+        @media (min-width: 768px) { .masonry-item { margin-bottom: 2rem; } }
+
+        /* Ambient Effects (Kim tuyến & Trái tim) */
+        .particle { position: fixed; top: -10%; z-index: 9999; pointer-events: none; will-change: transform; }
+        .sparkle { width: 4px; height: 4px; background: #D4AF37; border-radius: 50%; box-shadow: 0 0 10px 2px rgba(212, 175, 55, 0.8); animation: fall linear forwards, twinkle 2s ease-in-out infinite; }
+        .drawn-heart { width: 20px; height: 20px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'%3E%3C/path%3E%3C/svg%3E"); background-size: cover; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.3); } }
+
+        /* Marquee cho Guestbook */
+        .ticker-wrap { width: 100%; overflow: hidden; white-space: nowrap; background: rgba(43, 76, 62, 0.05); padding: 1.5rem 0; border-top: 1px solid rgba(212,175,55,0.3); border-bottom: 1px solid rgba(212,175,55,0.3); }
+        .ticker-content { display: inline-block; animation: ticker 40s linear infinite; }
+        .ticker-content:hover { animation-play-state: paused; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        
+        .wish-card { display: inline-flex; flex-direction: column; background: #fff; border: 1px solid rgba(43,76,62,0.1); border-radius: 8px; padding: 1rem 1.5rem; margin-right: 2rem; min-width: 300px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); white-space: normal; vertical-align: top;}
+
+        /* Preloader Pulse */
+        @keyframes customPulse { 0% { box-shadow: 0 0 0 0 rgba(212,175,55, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(212,175,55, 0); } 100% { box-shadow: 0 0 0 0 rgba(212,175,55, 0); } }
+        .pulse-seal { animation: customPulse 2s infinite; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2B4C3E; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased selection:bg-forest-green selection:text-white relative overflow-hidden">
+
+    <!-- FEATURE 1: CINEMATIC PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[10000] bg-forest-dark flex flex-col items-center justify-center transition-all duration-1000">
+        <!-- Background Decor cho Preloader -->
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
+        <div class="relative z-10 flex flex-col items-center">
+            <h2 class="font-script text-4xl text-gold mb-12 opacity-80">You're invited</h2>
+            <!-- Wax Seal Button (Nút Mở Thiệp & Kích Hoạt Nhạc) -->
+            <div id="unlock-btn" class="w-28 h-28 md:w-36 md:h-36 bg-gradient-to-br from-[#E5C058] via-[#D4AF37] to-[#996b15] rounded-full flex items-center justify-center font-serif text-white text-4xl md:text-5xl border-[3px] border-yellow-300/30 cursor-pointer pulse-seal hover:scale-110 transition-transform duration-300">
+                <span class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">N&D</span>
+            </div>
+            <p class="mt-12 text-cream-bg font-serif text-sm tracking-[0.3em] uppercase opacity-70 animate-pulse">Chạm để mở thiệp</p>
+        </div>
+    </div>
+
+    <div class="fixed inset-0 floral-bg pointer-events-none z-[-1]"></div>
+
+    <!-- Music Button (Nút điều khiển tắt/bật nhạc ở góc dưới) -->
+    <button id="music-btn" class="fixed bottom-6 right-6 z-50 bg-white p-3 md:p-4 rounded-full shadow-[0_4px_20px_rgba(43,76,62,0.3)] border border-forest-green/20 text-forest-green hover:bg-forest-green hover:text-white transition-all flex items-center justify-center group opacity-0 translate-y-10">
+        <i data-lucide="music" id="music-icon" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+    </button>
+    
+    <!-- KHU VỰC CHÈN NHẠC XUYÊN SUỐT (BACKGROUND MUSIC) -->
+    <!-- Sếp có thể thay đổi link nhạc ở thuộc tính src bên dưới. Yêu cầu đuôi file là .mp3 -->
+    <audio id="bgm" loop preload="auto">
+        <!-- Đã update một bản Piano tình yêu lãng mạn từ Pixabay -->
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_a0f5d5203f.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ thẻ audio.
+    </audio>
+
+    <!-- NEW: GRAND HERO SECTION -->
+    <header class="relative w-full h-screen bg-cover bg-center bg-no-repeat bg-fixed flex items-center justify-center overflow-hidden" style="background-image: url('https://raw.githubusercontent.com/fitallest/-nh/main/image/3218.JPG');">
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#FDFBF7] via-transparent to-transparent opacity-90"></div>
+        
+        <div class="relative z-10 text-center text-white px-4 reveal active mt-10">
+            <!-- FEATURE 2: HYPER-PERSONALIZATION -->
+            <div id="personal-greeting" class="hidden mb-6 py-2 px-6 bg-black/20 backdrop-blur-md rounded-full border border-white/20 inline-block font-serif text-lg md:text-xl drop-shadow-md">
+                <!-- Nội dung sẽ được JS fill vào đây -->
+            </div>
+
+            <p class="uppercase tracking-[0.4em] text-xs md:text-sm mb-6 font-serif drop-shadow-md">S a v e   T h e   D a t e</p>
+            <h1 class="font-script text-7xl md:text-[10rem] leading-none mb-4 drop-shadow-2xl">
+                Nhất Phi <span class="text-4xl md:text-7xl text-gold font-serif italic mx-2">&</span> Dương Lụa
+            </h1>
+            <div class="w-24 h-[1px] bg-white/50 mx-auto my-6"></div>
+            <p class="font-serif italic text-lg md:text-2xl drop-shadow-md">We are getting married</p>
+            
+            <!-- FEATURE 4: EASTER EGG (Click 3 lần vào ngày) -->
+            <div id="secret-date" class="inline-block cursor-pointer hover:text-gold transition-colors duration-300 rounded-lg p-2 mt-2" title="Có bí mật ẩn giấu ở đây...">
+                <p class="font-serif text-xl md:text-3xl tracking-widest drop-shadow-lg select-none">14 . 03 . 2026</p>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+            <i data-lucide="chevron-down" class="w-8 h-8 text-forest-green"></i>
+        </div>
+    </header>
+
+    <!-- INTRODUCTION SECTION -->
+    <section class="relative w-full py-24 px-4 overflow-hidden">
+        <img src="https://cdn.pixabay.com/photo/2020/05/11/08/32/watercolor-5157121_1280.png" class="absolute -top-10 -left-10 w-[250px] md:w-[400px] opacity-30 pointer-events-none rotate-[15deg] float-slow mix-blend-multiply" alt="floral">
+        <img src="https://cdn.pixabay.com/photo/2020/05/11/08/32/watercolor-5157121_1280.png" class="absolute -bottom-20 -right-20 w-[250px] md:w-[400px] opacity-30 pointer-events-none rotate-[195deg] float-slower mix-blend-multiply" alt="floral">
+
+        <div class="z-10 text-center w-full max-w-2xl mx-auto flex flex-col items-center reveal">
+            <div class="w-[260px] h-[360px] md:w-[320px] md:h-[440px] arch-frame overflow-hidden border-[6px] border-white relative bg-gray-200 z-20 mb-8 group cursor-pointer shadow-xl">
+                <img src="https://raw.githubusercontent.com/fitallest/-nh/main/image/4002.JPG" alt="Couple Portrait" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-700"></div>
+            </div>
+
+            <p class="font-script text-3xl md:text-5xl text-forest-green mb-6 leading-relaxed">"Gặp gỡ là duyên, đồng hành là nợ,<br>và chung bước là sự lựa chọn của cả cuộc đời."</p>
+            <div class="w-16 h-[2px] bg-gold mx-auto mb-8"></div>
+            
+            <div class="flex items-center justify-center gap-6 md:gap-10 font-serif text-forest-dark border-y border-forest-green/20 py-5 w-full md:w-auto px-10 relative overflow-hidden">
+                <div class="absolute inset-0 bg-forest-green/5 transform -skew-x-12 translate-x-full hover:translate-x-0 transition-transform duration-700"></div>
+                <span class="uppercase tracking-widest text-sm md:text-xl font-medium relative z-10">Tháng Ba</span>
+                <div class="w-[1px] h-12 bg-forest-green relative z-10"></div>
+                <span class="text-4xl md:text-5xl text-gold-glitter font-medium relative z-10">10 <span class="text-2xl text-forest-green">&</span> 14</span>
+                <div class="w-[1px] h-12 bg-forest-green relative z-10"></div>
+                <span class="tracking-widest text-sm md:text-xl font-medium relative z-10">2026</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- COUNTDOWN SECTION -->
+    <section class="py-16 bg-forest-green text-white text-center relative z-10 shadow-2xl reveal">
+        <p class="font-script text-3xl text-gold mb-6">Cùng đếm ngược thời gian...</p>
+        <div id="countdown" class="flex justify-center gap-6 md:gap-20 font-serif">
+            <div class="flex flex-col items-center">
+                <span id="days" class="text-5xl md:text-7xl font-light">00</span>
+                <span class="text-[10px] md:text-xs tracking-[0.3em] uppercase mt-4 text-white/70">Ngày</span>
+            </div>
+            <span class="text-4xl md:text-6xl font-light mt-1 md:mt-2 text-white/20">|</span>
+            <div class="flex flex-col items-center">
+                <span id="hours" class="text-5xl md:text-7xl font-light">00</span>
+                <span class="text-[10px] md:text-xs tracking-[0.3em] uppercase mt-4 text-white/70">Giờ</span>
+            </div>
+            <span class="text-4xl md:text-6xl font-light mt-1 md:mt-2 text-white/20">|</span>
+            <div class="flex flex-col items-center">
+                <span id="minutes" class="text-5xl md:text-7xl font-light">00</span>
+                <span class="text-[10px] md:text-xs tracking-[0.3em] uppercase mt-4 text-white/70">Phút</span>
+            </div>
+            <span class="text-4xl md:text-6xl font-light mt-1 md:mt-2 text-white/20">|</span>
+            <div class="flex flex-col items-center">
+                <span id="seconds" class="text-5xl md:text-7xl font-light">00</span>
+                <span class="text-[10px] md:text-xs tracking-[0.3em] uppercase mt-4 text-white/70">Giây</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section class="py-32 px-4 overflow-hidden relative z-10">
+        <div class="max-w-6xl mx-auto relative">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-script text-6xl md:text-8xl text-forest-green mb-4">Khoảnh Khắc</h2>
+                <div class="w-20 h-[2px] bg-gold mx-auto mb-6"></div>
+                <p class="text-base text-gray-500 italic font-serif">"Lưu giữ vạn khoảnh khắc để làm kỷ niệm cho ngàn năm."</p>
+            </div>
+            
+            <div class="masonry-grid relative mt-10">
+                <div class="masonry-item reveal"><div class="relative group cursor-pointer overflow-hidden rounded-t-[80px] border-[8px] border-white shadow-[10px_10px_0px_rgba(43,76,62,0.1)] transform transition-transform hover:-translate-y-2"><img src="https://raw.githubusercontent.com/fitallest/-nh/main/image/3218.JPG" alt="Gallery 1" class="w-full h-auto object-cover group-hover:scale-105 transition-all duration-500"></div></div>
+                <div class="masonry-item reveal reveal-delay-1"><div class="relative group cursor-pointer border-[12px] border-white shadow-xl transform transition-transform hover:-translate-y-2 rotate-[2deg] hover:rotate-0"><img src="https://raw.githubusercontent.com/fitallest/-nh/main/image/4033.JPG" alt="Gallery 2" class="w-full h-auto object-cover group-hover:scale-105 transition-all duration-500"><div class="absolute bottom-4 left-4 bg-white/90 px-4 py-1 font-script text-xl text-forest-green">Sweet</div></div></div>
+                <div class="masonry-item reveal reveal-delay-2"><div class="relative group cursor-pointer rounded-sm border-[8px] border-white shadow-[10px_10px_0px_rgba(212,175,55,0.2)] transform transition-transform hover:-translate-y-2 rotate-[-2deg] hover:rotate-0"><img src="https://raw.githubusercontent.com/fitallest/-nh/main/image/4244.JPG" alt="Gallery 3" class="w-full h-auto object-cover group-hover:scale-105 transition-all duration-500"></div></div>
+                <div class="masonry-item reveal"><div class="relative group cursor-pointer border-[8px] border-white shadow-lg transform transition-transform hover:-translate-y-2"><img src="https://raw.githubusercontent.com/fitallest/-nh/main/image/4515.JPG" alt="Gallery 4" class="w-full h-auto object-cover group-hover:scale-105 transition-all duration-500"></div></div>
+                <div class="masonry-item reveal reveal-delay-1"><div class="relative group cursor-pointer overflow-hidden rounded-t-[100px] border-[10px] border-white shadow-xl transform transition-transform hover:-translate-y-2"><img src="https://raw.githubusercontent.com/fitallest/-nh/main/image/4542.JPG" alt="Gallery 5" class="w-full h-auto object-cover group-hover:scale-105 transition-all duration-500"></div></div>
+                <div class="masonry-item reveal reveal-delay-2"><div class="relative group cursor-pointer border-[8px] border-white shadow-lg transform transition-transform hover:-translate-y-2 rotate-[1deg] hover:rotate-0"><img src="https://raw.githubusercontent.com/fitallest/-nh/main/image/4661.JPG" alt="Gallery 6" class="w-full h-auto object-cover group-hover:scale-105 transition-all duration-500"><div class="absolute top-4 right-4 bg-forest-green text-white px-4 py-1 font-serif text-sm tracking-widest uppercase">Eternity</div></div></div>
+            </div>
+            <div class="text-center mt-12 reveal">
+                <button class="border border-forest-green text-forest-green px-8 py-3 text-sm uppercase tracking-widest hover:bg-forest-green hover:text-white transition-colors duration-300">
+                    Xem trọn bộ Album
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVENT DETAILS -->
+    <section class="py-24 px-4 md:px-0 max-w-5xl mx-auto text-center relative z-10" id="details">
+        <div class="reveal">
+            <h2 class="font-script text-6xl md:text-8xl text-forest-green mb-6">Sự kiện</h2>
+            <div class="w-20 h-[2px] bg-gold mx-auto mb-20"></div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            <div class="bg-white p-12 border border-forest-green/10 shadow-2xl relative transition-all hover:-translate-y-4 duration-500 group reveal reveal-delay-1">
+                <i data-lucide="flower-2" class="w-10 h-10 text-forest-green/20 absolute top-6 left-6 group-hover:text-gold transition-colors duration-500 group-hover:rotate-180"></i>
+                <h3 class="font-serif text-4xl text-forest-green mb-3 mt-6">Lễ Vu Quy</h3>
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-forest-green px-6 py-2 text-white text-xs tracking-[0.2em] uppercase shadow-md">Nhà Gái</div>
+                <p class="font-bold text-gray-800 text-xl mt-8">Thứ Ba, 10 Tháng 3, 2026</p>
+                <p class="text-base text-gray-500 mb-6 italic font-serif">(Nhằm ngày 22/01 Âm lịch)</p>
+                <div class="w-16 h-[1px] bg-gold mx-auto mb-8"></div>
+                <p class="text-gray-600 text-base leading-relaxed mb-10 h-16">Tại tư gia nhà gái<br><span class="font-medium text-gray-800">[Điền địa chỉ cụ thể]</span></p>
+                <a href="#" target="_blank" class="inline-flex items-center gap-2 border border-forest-green text-forest-green px-8 py-3 text-sm uppercase tracking-widest hover:bg-forest-green hover:text-white transition duration-300"><i data-lucide="map-pin" class="w-4 h-4"></i> Xem Bản Đồ</a>
+            </div>
+
+            <div class="bg-white p-12 border border-forest-green/10 shadow-2xl relative transition-all hover:-translate-y-4 duration-500 group reveal reveal-delay-2">
+                 <i data-lucide="flower-2" class="w-10 h-10 text-forest-green/20 absolute top-6 left-6 group-hover:text-gold transition-colors duration-500 group-hover:rotate-180"></i>
+                <h3 class="font-serif text-4xl text-forest-green mb-3 mt-6">Lễ Thành Hôn</h3>
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-forest-green px-6 py-2 text-white text-xs tracking-[0.2em] uppercase shadow-md">Nhà Trai</div>
+                <p class="font-bold text-gray-800 text-xl mt-8">Thứ Bảy, 14 Tháng 3, 2026</p>
+                <p class="text-base text-gray-500 mb-6 italic font-serif">(Nhằm ngày 26/01 Âm lịch)</p>
+                <div class="w-16 h-[1px] bg-gold mx-auto mb-8"></div>
+                <p class="text-gray-600 text-base leading-relaxed mb-10 h-16">Tại trung tâm tiệc cưới<br><span class="font-medium text-gray-800">[Điền địa chỉ cụ thể]</span></p>
+                <a href="#" target="_blank" class="inline-flex items-center gap-2 border border-forest-green text-forest-green px-8 py-3 text-sm uppercase tracking-widest hover:bg-forest-green hover:text-white transition duration-300"><i data-lucide="map-pin" class="w-4 h-4"></i> Xem Bản Đồ</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP ENVELOPE -->
+    <section class="py-24 px-4 max-w-4xl mx-auto relative z-10 reveal">
+        <div class="text-center mb-16">
+            <h2 class="font-script text-6xl md:text-8xl text-forest-green mb-4">Mở thiệp nhé!</h2>
+            <p class="text-sm text-gray-500 uppercase tracking-widest">Xác Nhận Tham Dự - R.S.V.P</p>
+        </div>
+
+        <div class="relative bg-forest-green rounded-md shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] p-2 md:p-4 max-w-2xl mx-auto group perspective-[1500px]">
+            <div class="absolute top-0 left-0 w-full h-[55%] bg-[#223d31] z-50 origin-top transition-transform duration-1000 group-hover:[transform:rotateX(180deg)] group-hover:pointer-events-none cursor-pointer" style="clip-path: polygon(0 0, 100% 0, 50% 100%);"></div>
+            <div class="absolute top-0 left-0 w-full h-[55%] bg-black/20 z-40 transition-opacity duration-500 group-hover:opacity-0 group-hover:pointer-events-none" style="clip-path: polygon(0 0, 100% 0, 50% 100%); filter: blur(5px); transform: translateY(5px);"></div>
+
+            <div class="absolute top-[55%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-24 h-24 bg-gradient-to-br from-[#E5C058] via-[#D4AF37] to-[#996b15] rounded-full shadow-[0_10px_20px_rgba(0,0,0,0.6)] flex items-center justify-center font-serif text-white text-3xl border-2 border-yellow-300/30 transition-all duration-700 group-hover:scale-0 group-hover:opacity-0 group-hover:pointer-events-none cursor-pointer">
+                <span class="drop-shadow-lg font-bold">N&D</span>
+            </div>
+
+            <div class="bg-cream-bg p-8 md:p-14 relative z-40 mt-12 md:mt-20 mx-2 md:mx-4 mb-2 md:mb-4 rounded-sm border border-gold/20 shadow-inner group-hover:z-50 transition-all duration-300">
+                <p class="font-script text-4xl text-forest-green text-center mb-10">Kính gửi người thương,</p>
+                <form id="rsvp-form" class="space-y-8" onsubmit="handleRSVP(event)">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div><input type="text" id="name" required class="w-full border-b border-forest-green/30 py-2 focus:outline-none focus:border-gold transition-colors bg-transparent text-base placeholder-gray-400" placeholder="Tên của bạn *"></div>
+                        <div><input type="tel" id="phone" required class="w-full border-b border-forest-green/30 py-2 focus:outline-none focus:border-gold transition-colors bg-transparent text-base placeholder-gray-400" placeholder="Số điện thoại *"></div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <select id="event-type" class="w-full border-b border-forest-green/30 py-2 focus:outline-none focus:border-gold transition-colors bg-transparent text-gray-600 text-base cursor-pointer">
+                                <option value="" disabled selected>Tham dự tiệc nào?</option>
+                                <option>Nhà Gái (10/03)</option>
+                                <option>Nhà Trai (14/03)</option>
+                                <option>Cả hai tiệc 🎉</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="guests" class="w-full border-b border-forest-green/30 py-2 focus:outline-none focus:border-gold transition-colors bg-transparent text-gray-600 text-base cursor-pointer">
+                                <option value="" disabled selected>Số người tham dự</option>
+                                <option>1 Người</option>
+                                <option>2 Người</option>
+                                <option>Rất tiếc, mình vắng mặt 😢</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <textarea id="message" rows="2" class="w-full border-b border-forest-green/30 py-2 focus:outline-none focus:border-gold transition-colors bg-transparent resize-none text-base placeholder-gray-400" placeholder="Vài lời nhắn gửi đến Cô dâu & Chú rể..."></textarea>
+                    </div>
+                    <div class="pt-8 text-center">
+                        <button type="submit" id="submit-btn" class="bg-forest-green text-white px-14 py-4 text-sm uppercase tracking-[0.2em] hover:bg-gold hover:text-forest-dark hover:shadow-[0_10px_20px_rgba(212,175,55,0.4)] transition-all duration-300 font-medium cursor-pointer relative z-50">
+                            Gửi Lời Chúc
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURE 3: LIVE GUESTBOOK (Lời chúc chạy ngang) -->
+    <section class="py-12 bg-cream-bg relative z-10">
+        <div class="text-center mb-8">
+            <h3 class="font-serif text-2xl text-forest-green italic">Sổ lưu bút</h3>
+        </div>
+        <div class="ticker-wrap">
+            <div class="ticker-content" id="guestbook-ticker">
+                <!-- Data giả lập ban đầu -->
+                <div class="wish-card">
+                    <p class="font-serif text-forest-dark font-medium mb-1">Anh Sơn (Team Marketing)</p>
+                    <p class="text-sm text-gray-600 italic">"Chúc hai em trăm năm hạnh phúc nhé! Sớm sinh quý tử nha."</p>
+                </div>
+                <div class="wish-card">
+                    <p class="font-serif text-forest-dark font-medium mb-1">Cái Diệp (BFF)</p>
+                    <p class="text-sm text-gray-600 italic">"Tuyệt vời quá! Cuối cùng cũng được ăn cỗ con bạn thân rồiiii 🎉"</p>
+                </div>
+                <div class="wish-card">
+                    <p class="font-serif text-forest-dark font-medium mb-1">Sếp Tuấn</p>
+                    <p class="text-sm text-gray-600 italic">"Mãi mãi hạnh phúc nhé hai em. Đám cưới quẩy hết mình!"</p>
+                </div>
+                <!-- Duplicate nội dung để cuộn liên tục (seamless loop) -->
+                <div class="wish-card">
+                    <p class="font-serif text-forest-dark font-medium mb-1">Anh Sơn (Team Marketing)</p>
+                    <p class="text-sm text-gray-600 italic">"Chúc hai em trăm năm hạnh phúc nhé! Sớm sinh quý tử nha."</p>
+                </div>
+                <div class="wish-card">
+                    <p class="font-serif text-forest-dark font-medium mb-1">Cái Diệp (BFF)</p>
+                    <p class="text-sm text-gray-600 italic">"Tuyệt vời quá! Cuối cùng cũng được ăn cỗ con bạn thân rồiiii 🎉"</p>
+                </div>
+                <div class="wish-card">
+                    <p class="font-serif text-forest-dark font-medium mb-1">Sếp Tuấn</p>
+                    <p class="text-sm text-gray-600 italic">"Mãi mãi hạnh phúc nhé hai em. Đám cưới quẩy hết mình!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIGITAL GIFT (3D Flip Cards) -->
+    <section class="py-24 bg-cream-bg text-forest-green px-4 text-center relative z-10 border-t border-forest-green/10">
+        <div class="max-w-4xl mx-auto">
+            <div class="reveal">
+                <h2 class="font-script text-6xl mb-4 text-gold-glitter">Hộp Quà Yêu Thương</h2>
+                <p class="text-base text-gray-500 mb-16 font-serif italic">"Chạm vào thẻ để quét mã QR nhé!"</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="flip-card reveal reveal-delay-1 cursor-pointer">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-white border border-forest-green/20 shadow-xl flex flex-col items-center justify-center p-8">
+                            <i data-lucide="gift" class="w-16 h-16 text-gold mb-6"></i>
+                            <h3 class="font-serif text-3xl text-forest-green mb-2">Đến Chú rể</h3>
+                            <p class="text-sm text-gray-400 uppercase tracking-widest">Chạm để mở</p>
+                        </div>
+                        <div class="flip-card-back bg-forest-green text-white border border-gold/30 shadow-2xl p-6">
+                            <div class="w-40 h-40 bg-white mx-auto mb-6 p-2 rounded-lg">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NhatPhi" alt="QR" class="w-full h-full object-cover">
+                            </div>
+                            <p class="text-xs uppercase tracking-widest mb-1 text-gold">Vietcombank</p>
+                            <p class="font-bold text-xl tracking-wider mb-1">1234567890</p>
+                            <p class="text-base font-script">Nhat Phi</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card reveal reveal-delay-2 cursor-pointer">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front bg-white border border-forest-green/20 shadow-xl flex flex-col items-center justify-center p-8">
+                            <i data-lucide="heart-handshake" class="w-16 h-16 text-gold mb-6"></i>
+                            <h3 class="font-serif text-3xl text-forest-green mb-2">Đến Cô dâu</h3>
+                            <p class="text-sm text-gray-400 uppercase tracking-widest">Chạm để mở</p>
+                        </div>
+                        <div class="flip-card-back bg-forest-green text-white border border-gold/30 shadow-2xl p-6">
+                            <div class="w-40 h-40 bg-white mx-auto mb-6 p-2 rounded-lg">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DuongLua" alt="QR" class="w-full h-full object-cover">
+                            </div>
+                            <p class="text-xs uppercase tracking-widest mb-1 text-gold">Techcombank</p>
+                            <p class="font-bold text-xl tracking-wider mb-1">0987654321</p>
+                            <p class="text-base font-script">Duong Lua</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-forest-dark py-20 text-center text-cream-bg relative z-10 overflow-hidden">
+        <div class="reveal">
+            <h2 class="font-script text-7xl md:text-9xl text-gold-glitter mb-6 opacity-90">Nhất Phi & Dương Lụa</h2>
+            <p class="text-xs md:text-sm uppercase tracking-[0.4em] mb-12 text-cream-bg/70">Our Forever Starts Now</p>
+            <img src="https://cdn.pixabay.com/photo/2020/05/11/08/32/watercolor-5157121_1280.png" class="w-40 mx-auto opacity-20 mix-blend-screen grayscale mb-10 float-slow" alt="footer-floral">
+            <p class="text-[10px] md:text-xs opacity-40 uppercase tracking-[0.2em] font-medium">Crafted with passion for the big day &copy; 2026</p>
+        </div>
+    </footer>
+
+    <!-- MODAL EASTER EGG (Bí mật) -->
+    <div id="easter-egg-modal" class="fixed inset-0 z-[99999] bg-black/80 backdrop-blur-sm hidden flex-col items-center justify-center p-4">
+        <div class="bg-white p-2 rounded-xl relative w-full max-w-3xl shadow-[0_0_50px_rgba(212,175,55,0.3)]">
+            <button id="close-modal" class="absolute -top-4 -right-4 bg-gold text-white p-2 rounded-full hover:bg-forest-green transition-colors z-10">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="aspect-video w-full rounded-lg overflow-hidden bg-black">
+                <!-- Chỗ này sếp chèn link Youtube nhạc chế hoặc behind the scene nhé, tui để video meme làm mẫu -->
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <p class="text-center font-script text-2xl text-forest-green mt-4 mb-2">Bị lừa rồi nha! Cảm ơn bạn đã mò mẫm 😂</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+
+        // 1. HYPER-PERSONALIZATION (Đọc tên khách từ URL: ?to=Sếp+Tổng)
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('to');
+        if (guestName) {
+            const greetingEl = document.getElementById('personal-greeting');
+            greetingEl.innerHTML = `Thân mời <span class="text-gold font-bold italic ml-1">${guestName}</span>`;
+            greetingEl.classList.remove('hidden');
+        }
+
+        // 2. PRELOADER & AUDIO LOGIC
+        const preloader = document.getElementById('preloader');
+        const unlockBtn = document.getElementById('unlock-btn');
+        const musicBtn = document.getElementById('music-btn');
+        const audio = document.getElementById('bgm');
+        let isPlaying = false;
+
+        unlockBtn.addEventListener('click', () => {
+            // Mở khóa trang
+            document.body.classList.remove('overflow-hidden');
+            preloader.classList.add('opacity-0', '-translate-y-full');
+            musicBtn.classList.remove('opacity-0', 'translate-y-10'); // Hiện nút nhạc
+            
+            // Tự động play nhạc (Bypass Browser Autoplay Policy)
+            audio.play().then(() => {
+                isPlaying = true;
+                document.getElementById('music-icon').setAttribute('data-lucide', 'music');
+                lucide.createIcons();
+            }).catch(e => {
+                console.log("Audio play failed:", e);
+                // Nếu trình duyệt vẫn chặn, icon sẽ tự chuyển sang dạng "tắt tiếng"
+                document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x');
+                lucide.createIcons();
+            });
+
+            setTimeout(() => preloader.remove(), 1000); // Xóa element sau khi transition xong
+        });
+
+        // Toggle Music (Khi người dùng tự bấm nút âm thanh ở góc)
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x');
+            } else {
+                audio.play();
+                document.getElementById('music-icon').setAttribute('data-lucide', 'music');
+            }
+            lucide.createIcons();
+            isPlaying = !isPlaying;
+        });
+
+        // 3. EASTER EGG LOGIC (Click 3 lần vào ngày)
+        let clickCount = 0;
+        const secretDate = document.getElementById('secret-date');
+        const modal = document.getElementById('easter-egg-modal');
+        const closeModal = document.getElementById('close-modal');
+
+        secretDate.addEventListener('click', () => {
+            clickCount++;
+            if(clickCount === 3) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                clickCount = 0; // Reset
+                
+                // Tạm tắt nhạc nền nếu video bật
+                if(isPlaying) {
+                    audio.pause();
+                    document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x');
+                    lucide.createIcons();
+                    isPlaying = false;
+                }
+            }
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            // Stop iframe video by reloading its src
+            const iframe = modal.querySelector('iframe');
+            iframe.src = iframe.src;
+        });
+
+        // 4. RSVP & LIVE GUESTBOOK LOGIC
+        function handleRSVP(event) {
+            event.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const originalText = btn.innerText;
+            const nameInput = document.getElementById('name').value;
+            const messageInput = document.getElementById('message').value;
+            
+            btn.innerText = "Đang gửi...";
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            setTimeout(() => {
+                // Pháo giấy bùng nổ
+                var duration = 3 * 1000;
+                var animationEnd = Date.now() + duration;
+                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
+                function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+                var interval = setInterval(function() {
+                    var timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) return clearInterval(interval);
+                    var particleCount = 50 * (timeLeft / duration);
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+                }, 250);
+
+                // Update Live Guestbook (Chèn thêm card mới vào thẻ ticker)
+                if(messageInput.trim() !== "") {
+                    const newWish = `
+                    <div class="wish-card border-gold border">
+                        <p class="font-serif text-gold font-bold mb-1">${nameInput}</p>
+                        <p class="text-sm text-gray-600 italic">"${messageInput}"</p>
+                    </div>`;
+                    const ticker = document.getElementById('guestbook-ticker');
+                    ticker.insertAdjacentHTML('afterbegin', newWish);
+                }
+
+                btn.innerText = "Đã Gửi Thành Công! ✨";
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+                btn.classList.replace('bg-forest-green', 'bg-gold');
+                
+                setTimeout(() => {
+                    document.getElementById('rsvp-form').reset();
+                    btn.innerText = originalText;
+                    btn.classList.replace('bg-gold', 'bg-forest-green');
+                }, 4000);
+                
+            }, 1000);
+        }
+
+        // 5. Ambient Particles & Scroll Reveal & Countdown
+        function initParticles() {
+            setInterval(() => {
+                const particle = document.createElement('div');
+                const isHeart = Math.random() > 0.7;
+                particle.className = `particle ${isHeart ? 'drawn-heart' : 'sparkle'}`;
+                particle.style.left = Math.random() * 100 + 'vw';
+                const fallDuration = Math.random() * 5 + 7; 
+                particle.style.animationDuration = `${fallDuration}s`;
+                if(isHeart) {
+                    const size = Math.random() * 15 + 10;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.opacity = Math.random() * 0.5 + 0.3; 
+                }
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), fallDuration * 1000);
+            }, 400); 
+        }
+        initParticles();
+
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        const countDownDate = new Date("Mar 14, 2026 11:00:00").getTime();
+        const countdownTimer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+            if (distance < 0) {
+                clearInterval(countdownTimer);
+                document.getElementById("countdown").innerHTML = "<div class='text-4xl md:text-6xl text-gold-glitter font-script'>Happy Wedding Day! 🎉</div>";
+                return;
+            }
+            document.getElementById("days").innerHTML = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            document.getElementById("hours").innerHTML = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById("minutes").innerHTML = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById("seconds").innerHTML = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+        }, 1000);
+    </script>
+</body>
+</html>
