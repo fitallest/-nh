@@ -24,8 +24,8 @@
                 extend: {
                     colors: {
                         'cream-bg': '#FDFBF7',    
-                        'forest-green': '#4A7C59', /* FIX: Chuyển sang tone Xanh Bạch Đàn (Eucalyptus) sáng hơn, tươi hơn */
-                        'forest-dark': '#2A4D37',  /* Xanh đậm để làm nền Footer và tương phản chữ */
+                        'forest-green': '#4A7C59', 
+                        'forest-dark': '#2A4D37',  
                         'gold': '#D4AF37',       
                     },
                     fontFamily: {
@@ -95,13 +95,18 @@
         }
 
         /* 3D Flip Card - Fix render trên iOS Safari */
-        .flip-card { perspective: 1000px; height: 320px; }
+        .flip-card { perspective: 1000px; height: 320px; -webkit-tap-highlight-color: transparent; }
         .flip-card-inner { 
             position: relative; width: 100%; height: 100%; text-align: center; 
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
             transform-style: preserve-3d; 
         }
-        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        /* Giữ hover cho PC, dùng class .flipped cho touch mobile */
+        @media (hover: hover) and (pointer: fine) {
+            .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        
         .flip-card-front, .flip-card-back { 
             position: absolute; width: 100%; height: 100%; 
             -webkit-backface-visibility: hidden; backface-visibility: hidden; 
@@ -202,17 +207,17 @@
         <img src="https://wsrv.nl/?url=raw.githubusercontent.com/fitallest/-nh/main/image/flower.png&w=400&output=webp" onerror="this.style.display='none'" class="absolute top-0 right-0 w-32 md:w-56 opacity-90 pointer-events-none rotate-[15deg] z-10 float-slower origin-top-right" alt="Corner Floral">
 
         <!-- Cụm hoa mờ nền -->
-        <img src="https://wsrv.nl/?url=cdn.pixabay.com/photo/2020/05/11/08/32/watercolor-5157121_1280.png&w=600&output=webp" class="absolute -bottom-10 -left-10 w-[200px] md:w-[400px] opacity-20 pointer-events-none rotate-[15deg] float-slow mix-blend-multiply" alt="floral">
+        <img src="https://wsrv.nl/?url=raw.githubusercontent.com/fitallest/-nh/main/image/flower.png&w=600&output=webp" onerror="this.style.display='none'" class="absolute -bottom-10 -left-10 w-[200px] md:w-[400px] opacity-20 pointer-events-none rotate-[15deg] float-slow mix-blend-multiply" alt="floral">
 
         <div class="z-10 text-center w-full max-w-2xl mx-auto flex flex-col items-center reveal relative">
             
-            <!-- FIX ĐÂY SẾP: Tăng độ rộng (w-[95%] max-w-[500px]) và mở rộng tỷ lệ (aspect-[4/5]) để giữ nguyên form ảnh -->
+            <!-- FIX ĐÂY SẾP: Đặt một wrapper có fixed aspect-ratio. -->
             <div class="relative w-[95%] sm:w-[85%] md:w-[75%] max-w-[500px] aspect-[4/5] mx-auto mb-16 mt-6">
                 
                 <!-- Hoa đè góc trên trái -->
                 <img src="https://wsrv.nl/?url=raw.githubusercontent.com/fitallest/-nh/main/image/flower.png&w=400&output=webp" onerror="this.style.display='none'" class="absolute -top-[10%] -left-[10%] w-[40%] z-30 pointer-events-none rotate-[-20deg] drop-shadow-xl hover:scale-105 transition-transform duration-500" alt="Arch Floral Top Left">
                 
-                <!-- Khung vòm chứa ảnh: Tăng viền và bo góc -->
+                <!-- Khung vòm chứa ảnh. Bắt buộc w-full h-full của container mẹ. -->
                 <div class="w-full h-full arch-frame overflow-hidden border-[8px] md:border-[12px] border-white relative bg-gray-200 z-20 shadow-2xl group">
                     <!-- FIX MẶT CHÚ RỂ: Thêm object-position: center 10% để kéo hình xuống một chút, tạo khoảng không trên đỉnh đầu -->
                     <img src="https://wsrv.nl/?url=raw.githubusercontent.com/fitallest/-nh/main/image/4002.JPG&w=1000&output=webp&q=80" alt="Couple Portrait" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 block" style="object-position: center 10%;" loading="lazy">
@@ -299,7 +304,7 @@
                 <p class="font-bold text-gray-800 text-lg md:text-xl mt-6 md:mt-8">Thứ Ba, 10 Tháng 3, 2026</p>
                 <p class="text-sm md:text-base text-gray-500 mb-4 md:mb-6 italic font-serif">(Nhằm ngày 22/01 Âm lịch)</p>
                 <div class="w-12 md:w-16 h-[1px] bg-gold mx-auto mb-6 md:mb-8"></div>
-                <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 md:mb-10 min-h-[3rem]">Tại tư gia nhà gái<br><span class="font-medium text-gray-800">[Điền địa chỉ cụ thể]</span></p>
+                <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 md:mb-10 min-h-[3rem]">Tại tư gia nhà gái<br><span class="font-medium text-gray-800">Hòn Đất, An Giang</span></p>
                 <a href="#" target="_blank" class="inline-flex items-center gap-2 border border-forest-green text-forest-green px-6 md:px-8 py-2 md:py-3 text-xs md:text-sm uppercase tracking-widest hover:bg-forest-green hover:text-white transition duration-300"><i data-lucide="map-pin" class="w-4 h-4"></i> Xem Bản Đồ</a>
             </div>
 
@@ -310,7 +315,7 @@
                 <p class="font-bold text-gray-800 text-lg md:text-xl mt-6 md:mt-8">Thứ Bảy, 14 Tháng 3, 2026</p>
                 <p class="text-sm md:text-base text-gray-500 mb-4 md:mb-6 italic font-serif">(Nhằm ngày 26/01 Âm lịch)</p>
                 <div class="w-12 md:w-16 h-[1px] bg-gold mx-auto mb-6 md:mb-8"></div>
-                <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 md:mb-10 min-h-[3rem]">Tại trung tâm tiệc cưới<br><span class="font-medium text-gray-800">[Điền địa chỉ cụ thể]</span></p>
+                <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 md:mb-10 min-h-[3rem]">Tại tư gia nhà trai<br><span class="font-medium text-gray-800">Bình Minh, Vĩnh Long</span></p>
                 <a href="#" target="_blank" class="inline-flex items-center gap-2 border border-forest-green text-forest-green px-6 md:px-8 py-2 md:py-3 text-xs md:text-sm uppercase tracking-widest hover:bg-forest-green hover:text-white transition duration-300"><i data-lucide="map-pin" class="w-4 h-4"></i> Xem Bản Đồ</a>
             </div>
         </div>
@@ -387,7 +392,7 @@
                     <p class="text-xs md:text-sm text-gray-600 italic">"Chúc hai em trăm năm hạnh phúc nhé! Sớm sinh quý tử nha."</p>
                 </div>
                 <div class="wish-card flex-shrink-0">
-                    <p class="font-serif text-forest-dark font-medium mb-1">Bạn Cường (BFF)</p>
+                    <p class="font-serif text-forest-dark font-medium mb-1">Cái Diệp (BFF)</p>
                     <p class="text-xs md:text-sm text-gray-600 italic">"Tuyệt vời quá! Cuối cùng cũng được ăn cỗ con bạn thân rồiiii 🎉"</p>
                 </div>
                 <div class="wish-card flex-shrink-0">
@@ -400,7 +405,7 @@
                     <p class="text-xs md:text-sm text-gray-600 italic">"Chúc hai em trăm năm hạnh phúc nhé! Sớm sinh quý tử nha."</p>
                 </div>
                 <div class="wish-card flex-shrink-0">
-                    <p class="font-serif text-forest-dark font-medium mb-1">Bạn Cường (BFF)</p>
+                    <p class="font-serif text-forest-dark font-medium mb-1">Cái Diệp (BFF)</p>
                     <p class="text-xs md:text-sm text-gray-600 italic">"Tuyệt vời quá! Cuối cùng cũng được ăn cỗ con bạn thân rồiiii 🎉"</p>
                 </div>
                 <div class="wish-card flex-shrink-0">
@@ -419,6 +424,7 @@
                 <p class="text-sm md:text-base text-gray-500 mb-12 md:mb-16 font-serif italic">"Chạm vào thẻ để quét mã QR nhé!"</p>
             </div>
             <div class="grid md:grid-cols-2 gap-8 md:gap-10">
+                <!-- Chú Rể -->
                 <div class="flip-card reveal reveal-delay-1 cursor-pointer">
                     <div class="flip-card-inner">
                         <div class="flip-card-front bg-white border border-forest-green/20 shadow-xl flex flex-col items-center justify-center p-6 md:p-8">
@@ -428,7 +434,8 @@
                         </div>
                         <div class="flip-card-back bg-forest-green text-white border border-gold/30 shadow-2xl p-4 md:p-6">
                             <div class="w-32 h-32 md:w-40 md:h-40 bg-white mx-auto mb-4 md:mb-6 p-2 rounded-lg">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=NhatPhi" alt="QR" class="w-full h-full object-cover">
+                                <!-- FIX: Đã thay bằng mã QR thật của Nhất Phi, set Quality=100 để quét nét căng -->
+                                <img src="https://wsrv.nl/?url=raw.githubusercontent.com/fitallest/-nh/main/image/maqrnatphi.jpg&w=300&output=webp&q=100" alt="QR Nhất Phi" class="w-full h-full object-contain">
                             </div>
                             <p class="text-[10px] md:text-xs uppercase tracking-widest mb-1 text-gold">Vietcombank</p>
                             <p class="font-bold text-lg md:text-xl tracking-wider mb-1">1234567890</p>
@@ -436,6 +443,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- Cô Dâu -->
                 <div class="flip-card reveal reveal-delay-2 cursor-pointer">
                     <div class="flip-card-inner">
                         <div class="flip-card-front bg-white border border-forest-green/20 shadow-xl flex flex-col items-center justify-center p-6 md:p-8">
@@ -445,7 +453,8 @@
                         </div>
                         <div class="flip-card-back bg-forest-green text-white border border-gold/30 shadow-2xl p-4 md:p-6">
                             <div class="w-32 h-32 md:w-40 md:h-40 bg-white mx-auto mb-4 md:mb-6 p-2 rounded-lg">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DuongLua" alt="QR" class="w-full h-full object-cover">
+                                <!-- FIX: Đã thay bằng mã QR thật của Dương Lụa, set Quality=100 để quét nét căng -->
+                                <img src="https://wsrv.nl/?url=raw.githubusercontent.com/fitallest/-nh/main/image/maqrduonglua.jpg&w=300&output=webp&q=100" alt="QR Dương Lụa" class="w-full h-full object-contain">
                             </div>
                             <p class="text-[10px] md:text-xs uppercase tracking-widest mb-1 text-gold">Techcombank</p>
                             <p class="font-bold text-lg md:text-xl tracking-wider mb-1">0987654321</p>
@@ -462,8 +471,9 @@
         <div class="reveal">
             <h2 class="font-script text-5xl md:text-8xl text-gold-glitter mb-4 md:mb-6 opacity-90">Nhất Phi & Dương Lụa</h2>
             <p class="text-[10px] md:text-sm uppercase tracking-[0.3em] md:tracking-[0.4em] mb-8 md:mb-12 text-cream-bg/70">Our Forever Starts Now</p>
-            <img src="https://cdn.pixabay.com/photo/2020/05/11/08/32/watercolor-5157121_1280.png" class="w-24 md:w-40 mx-auto opacity-20 mix-blend-screen grayscale mb-8 md:mb-10 float-slow" alt="footer-floral">
-            <p class="text-[8px] md:text-xs opacity-40 uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium">Crafted with passion for the big day &copy; 2026</p>
+            <!-- FIX: Thay ảnh dưới Footer bằng ảnh hoa từ Github của sếp luôn cho chuẩn -->
+            <img src="https://wsrv.nl/?url=raw.githubusercontent.com/fitallest/-nh/main/image/flower.png&w=400&output=webp" onerror="this.style.display='none'" class="w-24 md:w-40 mx-auto opacity-20 mix-blend-screen grayscale mb-8 md:mb-10 float-slow" alt="footer-floral">
+            <p class="text-[8px] md:text-xs opacity-40 uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium">Crafted with passion for the big day </p>
         </div>
     </footer>
 
@@ -500,29 +510,68 @@
         const unlockBtn = document.getElementById('unlock-btn');
         const musicBtn = document.getElementById('music-btn');
         const audio = document.getElementById('bgm');
+        
+        // FIX LỖI ABORT ERROR AUDIO: Các chốt chặn trạng thái
         let isPlaying = false;
+        let isUnlocked = false; // Ngăn double-click mở thiệp
+        let isToggling = false; // Ngăn spam click nút nhạc
 
-        unlockBtn.addEventListener('click', () => {
+        const unlockAction = (e) => {
+            if (e) e.preventDefault(); // Chặn hành vi mặc định sinh ra bóng mờ sự kiện
+            if (isUnlocked) return; // Nếu đã mở rồi thì không chạy lại lệnh play nữa
+            isUnlocked = true;
+
             document.body.classList.remove('overflow-hidden');
             preloader.classList.add('opacity-0', '-translate-y-full');
             musicBtn.classList.remove('opacity-0', 'translate-y-10'); 
             
-            audio.play().then(() => {
-                isPlaying = true;
-                document.getElementById('music-icon').setAttribute('data-lucide', 'music');
-                lucide.createIcons();
-            }).catch(e => {
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isPlaying = true;
+                    document.getElementById('music-icon').setAttribute('data-lucide', 'music');
+                    lucide.createIcons();
+                }).catch(err => {
+                    console.log("Trình duyệt chặn Autoplay:", err);
+                    isPlaying = false;
+                    document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x');
+                    lucide.createIcons();
+                });
+            }
+            setTimeout(() => preloader.remove(), 1000); 
+        };
+
+        // Gắn sự kiện (Sử dụng chốt isUnlocked để tránh đụng độ giữa click và touch)
+        unlockBtn.addEventListener('click', unlockAction);
+        unlockBtn.addEventListener('touchstart', unlockAction, { passive: false });
+
+        // Tối ưu lại nút bật/tắt nhạc tránh spam gây AbortError
+        musicBtn.addEventListener('click', () => {
+            if (isToggling) return; // Đang xử lý thì chặn click tiếp
+            isToggling = true;
+
+            if (isPlaying) { 
+                audio.pause();
+                isPlaying = false;
                 document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x');
                 lucide.createIcons();
-            });
-            setTimeout(() => preloader.remove(), 1000); 
-        });
-
-        musicBtn.addEventListener('click', () => {
-            if (isPlaying) { audio.pause(); document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x'); } 
-            else { audio.play(); document.getElementById('music-icon').setAttribute('data-lucide', 'music'); }
-            lucide.createIcons();
-            isPlaying = !isPlaying;
+                isToggling = false;
+            } else { 
+                const playPromise = audio.play(); 
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        isPlaying = true;
+                        document.getElementById('music-icon').setAttribute('data-lucide', 'music');
+                        lucide.createIcons();
+                    }).catch(err => {
+                        console.log("Không thể play audio:", err);
+                    }).finally(() => {
+                        isToggling = false; // Mở khóa sau khi hoàn tất
+                    });
+                } else {
+                    isToggling = false;
+                }
+            }
         });
 
         let clickCount = 0;
@@ -534,13 +583,26 @@
             clickCount++;
             if(clickCount === 3) {
                 modal.classList.remove('hidden'); modal.classList.add('flex'); clickCount = 0;
-                if(isPlaying) { audio.pause(); document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x'); lucide.createIcons(); isPlaying = false; }
+                if(isPlaying) { 
+                    audio.pause(); 
+                    document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x'); 
+                    lucide.createIcons(); 
+                    isPlaying = false; 
+                }
             }
         });
 
         closeModal.addEventListener('click', () => {
             modal.classList.add('hidden'); modal.classList.remove('flex');
             const iframe = modal.querySelector('iframe'); iframe.src = iframe.src;
+        });
+
+        const flipCards = document.querySelectorAll('.flip-card');
+        flipCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.classList.toggle('flipped');
+            });
         });
 
         function handleRSVP(event) {
@@ -580,7 +642,7 @@
 
         function initParticles() {
             setInterval(() => {
-                if(document.hidden) return; // Tiết kiệm pin khi user chuyển tab
+                if(document.hidden) return;
                 const particle = document.createElement('div');
                 const isHeart = Math.random() > 0.7;
                 particle.className = `particle ${isHeart ? 'drawn-heart' : 'sparkle'}`;
@@ -604,7 +666,6 @@
         }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
         revealElements.forEach(el => revealObserver.observe(el));
 
-        // Date Set to 14.03.2026
         const countDownDate = new Date("Mar 14, 2026 11:00:00").getTime();
         const countdownTimer = setInterval(function() {
             const now = new Date().getTime();
