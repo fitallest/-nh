@@ -166,9 +166,9 @@
         <i data-lucide="music" id="music-icon" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
     </button>
     
-    <!-- Audio -->
+    <!-- Audio (Lấy từ repo Github của sếp) -->
     <audio id="bgm" loop preload="auto">
-        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_a0f5d5203f.mp3" type="audio/mpeg">
+        <source src="https://raw.githubusercontent.com/fitallest/-nh/main/image/audio.mp3" type="audio/mpeg">
     </audio>
 
     <!-- HERO SECTION: Đã fix min-h-dvh cho iOS -->
@@ -315,7 +315,7 @@
                 <p class="font-bold text-gray-800 text-lg md:text-xl mt-6 md:mt-8">Thứ Bảy, 14 Tháng 3, 2026</p>
                 <p class="text-sm md:text-base text-gray-500 mb-4 md:mb-6 italic font-serif">(Nhằm ngày 26/01 Âm lịch)</p>
                 <div class="w-12 md:w-16 h-[1px] bg-gold mx-auto mb-6 md:mb-8"></div>
-                <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 md:mb-10 min-h-[3rem]">Tại tư gia nhà trai<br><span class="font-medium text-gray-800">Bình Minh, Vĩnh Long</span></p>
+                <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 md:mb-10 min-h-[3rem]">Tại trung tâm tiệc cưới<br><span class="font-medium text-gray-800">Bình Minh, Vĩnh Long</span></p>
                 <a href="#" target="_blank" class="inline-flex items-center gap-2 border border-forest-green text-forest-green px-6 md:px-8 py-2 md:py-3 text-xs md:text-sm uppercase tracking-widest hover:bg-forest-green hover:text-white transition duration-300"><i data-lucide="map-pin" class="w-4 h-4"></i> Xem Bản Đồ</a>
             </div>
         </div>
@@ -511,29 +511,51 @@
         const musicBtn = document.getElementById('music-btn');
         const audio = document.getElementById('bgm');
         
-        // FIX LỖI ABORT ERROR AUDIO: Các chốt chặn trạng thái
         let isPlaying = false;
-        let isUnlocked = false; // Ngăn double-click mở thiệp
-        let isToggling = false; // Ngăn spam click nút nhạc
+        let isUnlocked = false; 
+        let isToggling = false; 
+        let playPromise;
+
+        // Hàm hỗ trợ Fade-in mượt mà trong 1 giây (1000ms)
+        const fadeInAudio = () => {
+            let vol = 0;
+            audio.volume = vol; // Bắt đầu ở mức 0
+            const fadeInterval = setInterval(() => {
+                vol += 0.05; // Mỗi lần tăng 5%
+                if (vol >= 1) {
+                    audio.volume = 1;
+                    clearInterval(fadeInterval);
+                } else {
+                    audio.volume = vol;
+                }
+            }, 50); // Lặp lại sau mỗi 50ms (20 lần x 50ms = 1000ms)
+        };
 
         const unlockAction = (e) => {
-            if (e) e.preventDefault(); // Chặn hành vi mặc định sinh ra bóng mờ sự kiện
-            if (isUnlocked) return; // Nếu đã mở rồi thì không chạy lại lệnh play nữa
+            if (e) e.preventDefault(); 
+            if (isUnlocked) return; 
             isUnlocked = true;
 
             document.body.classList.remove('overflow-hidden');
             preloader.classList.add('opacity-0', '-translate-y-full');
             musicBtn.classList.remove('opacity-0', 'translate-y-10'); 
             
-            const playPromise = audio.play();
+            audio.load();
+            // CHÍNH XÁC ĐÂY SẾP: Nhảy tới mốc 1 phút 10 giây (70 giây)
+            audio.currentTime = 70;
+            // Ép volume về 0 để chuẩn bị làm hiệu ứng to dần
+            audio.volume = 0; 
+            
+            playPromise = audio.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
                     isPlaying = true;
                     document.getElementById('music-icon').setAttribute('data-lucide', 'music');
                     lucide.createIcons();
+                    // Kích hoạt thuật toán Fade-in
+                    fadeInAudio();
                 }).catch(err => {
-                    console.log("Trình duyệt chặn Autoplay:", err);
-                    isPlaying = false;
+                    console.log("iOS chặn Audio Autoplay:", err);
                     document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x');
                     lucide.createIcons();
                 });
@@ -541,33 +563,38 @@
             setTimeout(() => preloader.remove(), 1000); 
         };
 
-        // Gắn sự kiện (Sử dụng chốt isUnlocked để tránh đụng độ giữa click và touch)
         unlockBtn.addEventListener('click', unlockAction);
         unlockBtn.addEventListener('touchstart', unlockAction, { passive: false });
 
-        // Tối ưu lại nút bật/tắt nhạc tránh spam gây AbortError
         musicBtn.addEventListener('click', () => {
-            if (isToggling) return; // Đang xử lý thì chặn click tiếp
+            if (isToggling) return; 
             isToggling = true;
 
             if (isPlaying) { 
-                audio.pause();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        audio.pause(); 
+                        document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x');
+                        lucide.createIcons();
+                    }).catch(e => console.log("Không thể pause audio đang load", e));
+                } else {
+                    audio.pause(); 
+                    document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x');
+                    lucide.createIcons();
+                }
                 isPlaying = false;
-                document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x');
-                lucide.createIcons();
                 isToggling = false;
             } else { 
-                const playPromise = audio.play(); 
-                if (playPromise !== undefined) {
+                // Khi khách bấm bật nhạc lại, tui cũng set Fade-in cho sang chảnh
+                audio.volume = 0;
+                playPromise = audio.play(); 
+                if(playPromise !== undefined) {
                     playPromise.then(() => {
                         isPlaying = true;
                         document.getElementById('music-icon').setAttribute('data-lucide', 'music');
                         lucide.createIcons();
-                    }).catch(err => {
-                        console.log("Không thể play audio:", err);
-                    }).finally(() => {
-                        isToggling = false; // Mở khóa sau khi hoàn tất
-                    });
+                        fadeInAudio();
+                    }).catch(e => console.log(e)).finally(() => isToggling = false);
                 } else {
                     isToggling = false;
                 }
@@ -584,10 +611,14 @@
             if(clickCount === 3) {
                 modal.classList.remove('hidden'); modal.classList.add('flex'); clickCount = 0;
                 if(isPlaying) { 
-                    audio.pause(); 
-                    document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x'); 
-                    lucide.createIcons(); 
-                    isPlaying = false; 
+                    if(playPromise !== undefined) {
+                        playPromise.then(_ => {
+                            audio.pause(); 
+                            document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x'); 
+                            lucide.createIcons(); 
+                            isPlaying = false; 
+                        });
+                    }
                 }
             }
         });
