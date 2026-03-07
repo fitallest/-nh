@@ -10,17 +10,18 @@
     
     <!-- Open Graph / Facebook / Zalo -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://fitallest.github.io/-nh/">
+    <meta property="og:url" content="https://fitallest.github.io/-nh/"> 
     <meta property="og:title" content="Thiệp cưới | Nhất Phi & Dương Lụa">
     <meta property="og:description" content="We are getting married! Trân trọng kính mời bạn đến dự buổi tiệc chung vui. Chạm để mở thiệp.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/fitallest/-nh/main/image/3218.JPG">
+    <!-- Fix lỗi Zalo Cache: Dùng CDN trung gian để ép Zalo nhận diện hình -->
+    <meta property="og:image" content="https://wsrv.nl/?url=raw.githubusercontent.com/fitallest/-nh/main/image/3218.JPG&w=800&output=jpg">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://fitallest.github.io/-nh/">
     <meta property="twitter:title" content="Thiệp cưới | Nhất Phi & Dương Lụa">
     <meta property="twitter:description" content="We are getting married! Save our date: 14.03.2026.">
-    <meta property="twitter:image" content="https://raw.githubusercontent.com/fitallest/-nh/main/image/3218.JPG">
+    <meta property="twitter:image" content="https://wsrv.nl/?url=raw.githubusercontent.com/fitallest/-nh/main/image/3218.JPG&w=800&output=jpg">
 
     <!-- Import Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,6 +64,7 @@
         html { scroll-behavior: smooth; overflow-x: hidden; }
         body { 
             background-color: #FDFBF7; 
+            /* Fix URL chứa khoảng trắng (Paper Texture) */
             background-image: url('https://raw.githubusercontent.com/fitallest/filua/main/image/hoa/Background%20Paper%20Texture.png'); 
             background-size: cover;
             background-position: center;
@@ -137,14 +139,14 @@
         .masonry-item { break-inside: avoid; margin-bottom: 1.5rem; display: inline-block; width: 100%; }
         @media (min-width: 768px) { .masonry-item { margin-bottom: 2rem; } }
 
-        /* Particles - Phục hồi Icon Trái tim gốc & xóa pháo giấy */
+        /* Particles - Trái tim lấp lánh (drawn-heart) */
         .particle { position: fixed; top: -10%; z-index: 9999; pointer-events: none; will-change: transform; }
         .sparkle { width: 4px; height: 4px; background: #D4AF37; border-radius: 50%; box-shadow: 0 0 10px 2px rgba(212, 175, 55, 0.8); animation: fall linear forwards, twinkle 2s ease-in-out infinite; }
         
         .drawn-heart { 
             width: 20px; 
             height: 20px; 
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'%3E%3C/path%3E%3C/svg%3E"); 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E8B81D' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'%3E%3C/path%3E%3C/svg%3E"); 
             background-size: cover; 
             animation: fall linear forwards; 
         }
@@ -187,6 +189,7 @@
 
     <!-- PRELOADER -->
     <div id="preloader" class="fixed inset-0 z-[10000] bg-forest-dark flex flex-col items-center justify-center transition-all duration-1000 overflow-hidden">
+        <!-- Fix lỗi %20 khoảng trắng cho vân giấy -->
         <div class="absolute inset-0 opacity-20 bg-[url('https://raw.githubusercontent.com/fitallest/filua/main/image/hoa/Background%20Paper%20Texture.png')] bg-cover mix-blend-overlay"></div>
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
         
@@ -196,8 +199,10 @@
             <div class="relative flex justify-center items-center mt-4 mb-4">
                 <img src="https://raw.githubusercontent.com/fitallest/filua/main/image/hoa/hoa2.png" class="absolute w-64 md:w-80 opacity-90 rotate-[-15deg] pointer-events-none drop-shadow-md transition-transform duration-1000" alt="Floral Decor">
                 
+                <!-- Nút bấm - Thêm id img bên trong để làm hiệu ứng loading mờ -->
                 <div id="unlock-btn" class="w-36 h-36 md:w-48 md:h-48 cursor-pointer relative z-20 flex items-center justify-center rounded-full animate-breathe">
-                    <img src="https://raw.githubusercontent.com/fitallest/filua/main/image/hoa/Wax%20Seal.png" alt="Mở thiệp" class="w-full h-full object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.6)] hover:scale-105 transition-all duration-300">
+                    <!-- Fix lỗi URL Wax Seal -->
+                    <img id="seal-img" src="https://raw.githubusercontent.com/fitallest/filua/main/image/hoa/Wax%20Seal.png" alt="Mở thiệp" class="w-full h-full object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.6)] hover:scale-105 transition-all duration-300">
                 </div>
             </div>
             
@@ -212,9 +217,9 @@
         <i data-lucide="music" id="music-icon" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
     </button>
     
-    <!-- Audio -->
+    <!-- SỬA LỖI AUDIO: Chuyển sang CDN jsDelivr để hỗ trợ tính năng tua nhạc (Range Requests), không bị kẹt khi nhảy đến giây 70 -->
     <audio id="bgm" loop preload="auto">
-        <source src="https://raw.githubusercontent.com/fitallest/-nh/main/image/audio.mp3" type="audio/mpeg">
+        <source src="https://cdn.jsdelivr.net/gh/fitallest/-nh@main/image/audio.mp3" type="audio/mpeg">
     </audio>
 
     <!-- HERO SECTION -->
@@ -266,6 +271,7 @@
             <p class="font-script text-3xl md:text-5xl text-forest-green mb-6 leading-relaxed relative z-30 px-4">"Gặp gỡ là duyên, đồng hành là nợ,<br>và chung bước là sự lựa chọn của cả cuộc đời."</p>
             <div class="w-16 h-[2px] bg-gold mx-auto mb-8 relative z-30"></div>
             
+            <!-- Fix link Line Art -->
             <div class="my-8 w-full flex justify-center">
                 <img src="https://raw.githubusercontent.com/fitallest/filua/main/image/hoa/Minimalist%20Line%20Art.png" class="w-48 md:w-64 opacity-80 mix-blend-multiply" alt="Line Art" onerror="this.style.display='none'">
             </div>
@@ -319,6 +325,7 @@
             </div>
             
             <div class="masonry-grid relative mt-8 px-2">
+                <!-- Fix link Washi Tape -->
                 <div class="masonry-item reveal"><div class="bg-white p-3 md:p-4 pb-12 md:pb-16 relative group cursor-pointer shadow-[0_8px_20px_rgba(0,0,0,0.06)] transform transition-transform hover:-translate-y-3 hover:shadow-2xl rotate-[-2deg]">
                     <img src="https://raw.githubusercontent.com/fitallest/filua/main/image/hoa/Washi%20Tape.png" class="absolute -top-3 left-1/2 -translate-x-1/2 w-28 opacity-90 z-20 rotate-2 drop-shadow-sm" alt="Tape" onerror="this.style.display='none'">
                     <img src="https://wsrv.nl/?url=raw.githubusercontent.com/fitallest/-nh/main/image/3218.JPG&w=600&output=webp&q=80" alt="Gallery 1" loading="lazy" class="w-full h-auto object-cover block relative z-10">
@@ -363,6 +370,7 @@
         
         <div class="grid md:grid-cols-2 gap-10 md:gap-12 max-w-4xl mx-auto">
             <div class="bg-white/90 backdrop-blur-sm p-8 md:p-12 border border-forest-green/10 shadow-xl relative transition-all hover:-translate-y-2 md:hover:-translate-y-4 duration-500 group reveal reveal-delay-1">
+                <!-- Fix link Nhẫn Cưới -->
                 <img src="https://raw.githubusercontent.com/fitallest/filua/main/image/hoa/nhancuoi.png" class="w-12 h-12 md:w-16 md:h-16 absolute top-4 left-4 md:top-6 md:left-6 group-hover:scale-110 transition-transform duration-500 opacity-80 mix-blend-multiply" alt="Nhẫn Cưới">
                 
                 <h3 class="font-serif text-3xl md:text-4xl text-forest-green mb-2 md:mb-3 mt-4 md:mt-6">Lễ Vu Quy</h3>
@@ -371,6 +379,8 @@
                 <p class="text-sm md:text-base text-gray-500 mb-4 md:mb-6 italic font-serif">(Nhằm ngày 22/01 Âm lịch)</p>
                 <div class="w-12 md:w-16 h-[1px] bg-gold mx-auto mb-6 md:mb-8"></div>
                 <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 md:mb-10 min-h-[3rem]">Tại tư gia nhà gái<br><span class="font-medium text-gray-800">Hòn Đất, An Giang</span></p>
+                
+                <!-- Fix link Map Pin -->
                 <a href="#" target="_blank" class="inline-flex items-center gap-2 border border-forest-green text-forest-green px-6 md:px-8 py-2 md:py-3 text-xs md:text-sm uppercase tracking-widest hover:bg-forest-green hover:text-white transition duration-300">
                     <img src="https://raw.githubusercontent.com/fitallest/filua/main/image/hoa/Watercolor%20Map%20Pin.png" class="w-6 h-6 opacity-90 mix-blend-multiply group-hover:brightness-200 transition-all drop-shadow-sm" alt="Map">
                     Xem Bản Đồ
@@ -378,6 +388,7 @@
             </div>
 
             <div class="bg-white/90 backdrop-blur-sm p-8 md:p-12 border border-forest-green/10 shadow-xl relative transition-all hover:-translate-y-2 md:hover:-translate-y-4 duration-500 group reveal reveal-delay-2">
+                <!-- Fix link Ly Rượu -->
                 <img src="https://raw.githubusercontent.com/fitallest/filua/main/image/hoa/lyruou.png" class="w-12 h-12 md:w-16 md:h-16 absolute top-4 left-4 md:top-6 md:left-6 group-hover:scale-110 transition-transform duration-500 opacity-80 mix-blend-multiply" alt="Ly Rượu">
                 
                 <h3 class="font-serif text-3xl md:text-4xl text-forest-green mb-2 md:mb-3 mt-4 md:mt-6">Lễ Thành Hôn</h3>
@@ -581,7 +592,7 @@
             let vol = 0;
             audio.volume = vol;
             const fadeInterval = setInterval(() => {
-                vol += 0.05; 
+                vol += 0.1; // SỬA LỖI: Tăng tốc độ mờ dần (0.05 -> 0.1) để nhạc to lên nhanh hơn trong 500ms
                 if (vol >= 1) {
                     audio.volume = 1;
                     clearInterval(fadeInterval);
@@ -591,34 +602,37 @@
             }, 50); 
         };
 
+        // Cập nhật lại Async Await để xử lý độ trễ nhạc (Latency) mượt mà hơn
         const unlockAction = async (e) => {
             if (e) e.preventDefault(); 
             if (isUnlocked) return; 
-            isUnlocked = true;
-
-            window.scrollTo({ top: 0, behavior: 'instant' });
-
-            document.body.classList.remove('overflow-hidden');
-            preloader.classList.add('opacity-0', '-translate-y-full');
-            musicBtn.classList.remove('opacity-0', 'translate-y-10'); 
             
+            // Đổi giao diện nút bấm thành mờ mờ để báo hiệu hệ thống đang tải nhạc
+            const sealImg = document.getElementById('seal-img');
+            if(sealImg) sealImg.style.opacity = '0.5';
+
             try {
-                audio.load();
-                audio.currentTime = 70; 
                 audio.volume = 0; 
+                await audio.play(); // SỬA LỖI: Bắt buộc Play trước để đánh thức Audio API
+                audio.currentTime = 70; // Sau đó mới tua đến giây 70, nó sẽ không bị khựng
                 
-                await audio.play(); 
                 isPlaying = true;
                 document.getElementById('music-icon').setAttribute('data-lucide', 'music');
-                lucide.createIcons();
                 fadeInAudio(); 
             } catch (err) {
-                console.log("iOS chặn Audio Autoplay:", err);
+                console.log("Auto-play issue, user can click to play later:", err);
                 isPlaying = false;
                 document.getElementById('music-icon').setAttribute('data-lucide', 'volume-x');
+            } finally {
+                // Đảm bảo mở thiệp dù nhạc có lỗi hay load chậm
+                isUnlocked = true;
                 lucide.createIcons();
+                window.scrollTo({ top: 0, behavior: 'instant' });
+                document.body.classList.remove('overflow-hidden');
+                preloader.classList.add('opacity-0', '-translate-y-full');
+                musicBtn.classList.remove('opacity-0', 'translate-y-10'); 
+                setTimeout(() => { if(preloader.parentNode) preloader.remove(); }, 1000); 
             }
-            setTimeout(() => preloader.remove(), 1000); 
         };
 
         unlockBtn.addEventListener('click', unlockAction);
@@ -703,7 +717,7 @@
             }, 1000);
         }
 
-        // Cập nhật hệ thống thả hạt CSS: Phục hồi nét trái tim vàng (drawn-heart)
+        // Cập nhật hệ thống thả hạt CSS
         function initParticles() {
             setInterval(() => {
                 if(document.hidden) return;
@@ -714,7 +728,7 @@
                 if (rand > 0.85) {
                     pType = 'cupid-fly';       
                 } else if (rand > 0.40) {
-                    pType = 'drawn-heart';  // Phục hồi trái tim nét mảnh
+                    pType = 'drawn-heart';  
                 }
                 
                 particle.className = `particle ${pType}`;
