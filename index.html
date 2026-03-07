@@ -470,7 +470,7 @@
                     <p class="text-xs md:text-sm text-gray-600 italic">"Chúc hai em trăm năm hạnh phúc nhé! Sớm sinh quý tử nha."</p>
                 </div>
                 <div class="wish-card flex-shrink-0">
-                    <p class="font-serif text-forest-dark font-medium mb-1">Cái Diệp (BFF)</p>
+                    <p class="font-serif text-forest-dark font-medium mb-1">Bạn Trang (BFF)</p>
                     <p class="text-xs md:text-sm text-gray-600 italic">"Tuyệt vời quá! Cuối cùng cũng được ăn cỗ con bạn thân rồiiii 🎉"</p>
                 </div>
                 <div class="wish-card flex-shrink-0">
@@ -482,7 +482,7 @@
                     <p class="text-xs md:text-sm text-gray-600 italic">"Chúc hai em trăm năm hạnh phúc nhé! Sớm sinh quý tử nha."</p>
                 </div>
                 <div class="wish-card flex-shrink-0">
-                    <p class="font-serif text-forest-dark font-medium mb-1">Cái Diệp (BFF)</p>
+                    <p class="font-serif text-forest-dark font-medium mb-1">Bạn Trang (BFF)</p>
                     <p class="text-xs md:text-sm text-gray-600 italic">"Tuyệt vời quá! Cuối cùng cũng được ăn cỗ con bạn thân rồiiii 🎉"</p>
                 </div>
                 <div class="wish-card flex-shrink-0">
@@ -613,7 +613,7 @@
 
             try {
                 audio.volume = 0; 
-                await audio.play(); // SỬA LỖI: Bắt buộc Play trước để đánh thức Audio API
+                await audio.play(); // Bắt buộc Play trước để đánh thức Audio API
                 audio.currentTime = 70; // Sau đó mới tua đến giây 70, nó sẽ không bị khựng
                 
                 isPlaying = true;
@@ -627,7 +627,10 @@
                 // Đảm bảo mở thiệp dù nhạc có lỗi hay load chậm
                 isUnlocked = true;
                 lucide.createIcons();
-                window.scrollTo({ top: 0, behavior: 'instant' });
+                
+                // SỬA LỖI MOBILE: Dùng hàm scrollTo cơ bản nhất để tránh lỗi Crash script trên trình duyệt mobile cũ
+                window.scrollTo(0, 0);
+                
                 document.body.classList.remove('overflow-hidden');
                 preloader.classList.add('opacity-0', '-translate-y-full');
                 musicBtn.classList.remove('opacity-0', 'translate-y-10'); 
